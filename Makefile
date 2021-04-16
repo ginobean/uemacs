@@ -33,7 +33,7 @@ HDR=ebind.h edef.h efunc.h epath.h estruct.h evar.h util.h version.h
 # DO NOT ADD OR MODIFY ANY LINES ABOVE THIS -- make source creates them
 
 CC=gcc
-WARNINGS=-Wall -Wstrict-prototypes
+WARNINGS=-Wall -Wstrict-prototypes -Wno-unused-result
 CFLAGS=-O2 $(WARNINGS) -g
 #CC=c89 +O3			# HP
 #CFLAGS= -D_HPUX_SOURCE -DSYSV
