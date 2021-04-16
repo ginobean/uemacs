@@ -72,7 +72,6 @@ int lastkey = 0;		/* last keystoke                */
 int seed = 0;			/* random number seed           */
 long envram = 0l;		/* # of bytes current in use by malloc */
 int macbug = FALSE;		/* macro debuging flag          */
-char errorm[] = "ERROR";	/* error literal                */
 char truem[] = "TRUE";		/* true literal                 */
 char falsem[] = "FALSE";	/* false litereal               */
 int cmdstatus = TRUE;		/* last command status          */

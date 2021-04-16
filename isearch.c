@@ -155,7 +155,13 @@ int isearch(int f, int n)
 	cmd_reexecute = -1;	/* We're not re-executing (yet?)      */
 	cmd_offset = 0;		/* Start at the beginning of the buff */
 	cmd_buff[0] = '\0';	/* Init the command buffer            */
+
+        // not sure what the problem here is. we're copying NPAT bytes into
+        // a buffer that has NPAT bytes..
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstringop-truncation"
 	strncpy(pat_save, pat, NPAT);	/* Save the old pattern string        */
+#pragma GCC diagnostic pop
 	curline = curwp->w_dotp;	/* Save the current line pointer      */
 	curoff = curwp->w_doto;	/* Save the current offset            */
 	init_direction = n;	/* Save the initial search direction  */
@@ -267,7 +273,7 @@ int isearch(int f, int n)
 /*
  * Trivial routine to insure that the next character in the search string is
  * still true to whatever we're pointing to in the buffer.  This routine will
- * not attempt to move the "point" if the match fails, although it will 
+ * not attempt to move the "point" if the match fails, although it will
  * implicitly move the "point" if we're forward searching, and find a match,
  * since that's the way forward isearch works.
  *
@@ -446,7 +452,7 @@ static int echo_char(int c, int col)
 
 /*
  * Routine to get the next character from the input stream.  If we're reading
- * from the real terminal, force a screen update before we get the char. 
+ * from the real terminal, force a screen update before we get the char.
  * Otherwise, we must be re-executing the command string, so just return the
  * next character.
  */

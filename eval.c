@@ -18,6 +18,8 @@
 
 #define	MAXVARS	255
 
+static char* errorm = "ERROR";
+
 /* User variables */
 static struct user_variable uv[MAXVARS + 1];
 
@@ -39,11 +41,17 @@ char *gtfun(char *fname)
 	int fnum;	/* index to function to eval */
 	int status;	/* return status */
 	char *tsp;	/* temporary string pointer */
-	char arg1[NSTRING];	/* value of first argument */
-	char arg2[NSTRING];	/* value of second argument */
-	char arg3[NSTRING];	/* value of third argument */
+	static char arg1[NSTRING];	/* value of first argument */
+	static char arg2[NSTRING];	/* value of second argument */
+	static char arg3[NSTRING];	/* value of third argument */
 	static char result[2 * NSTRING];	/* string result */
 
+        // since converting from 'char []' to 'static char []', make it
+        // impossible for previous values of arg1, arg2, arg3 to
+        // affect the current invocation.
+        arg1[0] = 0;
+        arg2[0] = 0;
+        arg3[0] = 0;
 	/* look the function up in the function table */
 	fname[3] = 0;		/* only first 3 chars significant */
 	mklower(fname);		/* and let it be upper or lower case */
@@ -341,7 +349,11 @@ char *getkill(void)
 			size = kused;
 		else
 			size = NSTRING - 1;
+// copying 0-127 bytes into a buffer of size 250 should be fine..
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstringop-truncation"
 		strncpy(value, kbufh->d_chunk, size);
+#pragma GCC diagnostic pop
 	}
 
 	/* and return the constructed value */
